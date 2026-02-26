@@ -1,11 +1,12 @@
 import SearchBar from "@/components/SearchBar"
 import { homeStyles } from "@/styles/home.styles"
-import { ScrollView, StatusBar, Text, View } from "react-native"
+import { ScrollView, StatusBar, Text, TouchableOpacity, View } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
 import { useRouter } from "expo-router"
-
+import { useLocation } from "@/hooks/useLocation"
 
 export default function App() {
+    const { getCurrentLocation, loading } = useLocation();
     const router = useRouter()
 
     const handleSearch = (cityName: string) => {
@@ -13,6 +14,10 @@ export default function App() {
             pathname: "/details",
             params: { cityName }
         })
+    }
+
+    const handleLocation = async() => {
+       console.log(await getCurrentLocation());
     }
 
     return (
@@ -27,6 +32,10 @@ export default function App() {
         </View>
 
         <SearchBar onSearch={handleSearch}/>
+
+        <TouchableOpacity onPress={handleLocation}>
+            <Text>Usar minha localização</Text>
+        </TouchableOpacity>
 
         <View style={homeStyles.emptyContainer}>
             <Text style={homeStyles.emptyText}>
